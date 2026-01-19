@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.denischifer.axon.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "BlockUpdateMixin",
+    "ChunkLoadMixin",
+    "ChunkUnloadMixin",
+    "CollisionViewMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "axon",
+  "version": "${version}",
+  "name": "AXON",
+  "description": "",
+  "authors": [
+    "denischifer"
+  ],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "environment": "*",
+    "entrypoints": {
+      "client": [
+        "dev.denischifer.axon.core.Axon"
+      ]
+    },
+    "mixins": [
+      "axon.mixins.json"
+    ],
+    "depends": {
+      "fabricloader": "*",
+      "fabric-api": "*",
+      "minecraft": "${minecraft_version}"
+    }
+  }
