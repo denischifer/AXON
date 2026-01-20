@@ -1,12 +1,15 @@
 package dev.denischifer.axon.data;
 
 import lombok.Getter;
-
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ChunkMaskData {
     private static final ConcurrentLinkedQueue<long[]> POOL = new ConcurrentLinkedQueue<>();
+    private static final AtomicInteger POOL_SIZE = new AtomicInteger(0);
+    private static final int MAX_POOL_SIZE = 1024;
+
     @Getter
     private long[] fullMask;
     @Getter
@@ -15,12 +18,20 @@ public class ChunkMaskData {
 
     public ChunkMaskData() {
         this.fullMask = POOL.poll();
-        if (this.fullMask == null) this.fullMask = new long[64];
-        else Arrays.fill(this.fullMask, 0L);
+        if (this.fullMask == null) {
+            this.fullMask = new long[64];
+        } else {
+            POOL_SIZE.decrementAndGet();
+            Arrays.fill(this.fullMask, 0L);
+        }
 
         this.complexMask = POOL.poll();
-        if (this.complexMask == null) this.complexMask = new long[64];
-        else Arrays.fill(this.complexMask, 0L);
+        if (this.complexMask == null) {
+            this.complexMask = new long[64];
+        } else {
+            POOL_SIZE.decrementAndGet();
+            Arrays.fill(this.complexMask, 0L);
+        }
     }
 
     public ChunkMaskData(long[] full, long[] complex) {
@@ -49,11 +60,19 @@ public class ChunkMaskData {
         else if (wasSolid && !isSolid) solidBlocks--;
     }
 
-    public boolean isEmpty() { return solidBlocks == 0; }
+    public boolean isEmpty() {
+        return solidBlocks == 0;
+    }
 
     public void release() {
-        if (this.fullMask != null) POOL.offer(this.fullMask);
-        if (this.complexMask != null) POOL.offer(this.complexMask);
+        if (this.fullMask != null && POOL_SIZE.get() < MAX_POOL_SIZE) {
+            POOL.offer(this.fullMask);
+            POOL_SIZE.incrementAndGet();
+        }
+        if (this.complexMask != null && POOL_SIZE.get() < MAX_POOL_SIZE) {
+            POOL.offer(this.complexMask);
+            POOL_SIZE.incrementAndGet();
+        }
         this.fullMask = null;
         this.complexMask = null;
     }

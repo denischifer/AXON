@@ -30,7 +30,7 @@ public abstract class ChunkLoadMixin {
             ChunkSection section = sections[s];
             if (section == null || section.isEmpty()) continue;
 
-            int bottomY = world.getBottomY() + (s << 4);
+            int bottomY = chunk.getWorld().getBottomY() + (s << 4);
             for (int y = 0; y < 16; y++) {
                 for (int z = 0; z < 16; z++) {
                     for (int x = 0; x < 16; x++) {

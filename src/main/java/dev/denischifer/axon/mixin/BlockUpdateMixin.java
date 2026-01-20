@@ -16,9 +16,12 @@ public abstract class BlockUpdateMixin {
         if (cir.getReturnValue()) {
             World world = (World) (Object) this;
             var shape = state.getCollisionShape(world, pos);
-            boolean isFull = net.minecraft.block.Block.isShapeFullCube(shape);
-            boolean isComplex = !shape.isEmpty() && !isFull;
-            SpatialGrid.setBlock(pos.getX(), pos.getY(), pos.getZ(), isFull, isComplex);
+            if (shape.isEmpty()) {
+                SpatialGrid.setBlock(pos.getX(), pos.getY(), pos.getZ(), false, false);
+            } else {
+                boolean isFull = net.minecraft.block.Block.isShapeFullCube(shape);
+                SpatialGrid.setBlock(pos.getX(), pos.getY(), pos.getZ(), isFull, !isFull);
+            }
         }
     }
 }

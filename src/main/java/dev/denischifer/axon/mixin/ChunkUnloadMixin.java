@@ -15,10 +15,10 @@ public abstract class ChunkUnloadMixin {
             WorldChunk chunk = (WorldChunk) (Object) this;
             int chunkX = chunk.getPos().x;
             int chunkZ = chunk.getPos().z;
-            int minY = chunk.getWorld().getBottomSectionCoord();
-            int maxY = chunk.getWorld().getTopSectionCoord();
+            int minSectionY = chunk.getWorld().getBottomSectionCoord();
+            int maxSectionY = chunk.getWorld().getTopSectionCoord();
 
-            for (int sectionY = minY; sectionY <= maxY; sectionY++) {
+            for (int sectionY = minSectionY; sectionY <= maxSectionY; sectionY++) {
                 SpatialGrid.unloadChunkSection(chunkX, sectionY, chunkZ);
             }
         }
