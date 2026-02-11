@@ -2,13 +2,14 @@
   "schemaVersion": 1,
   "id": "axon",
   "version": "${version}",
-  "name": "AXON",
-  "description": "",
+  "name": "Axon",
+  "description": "High-performance spatial math engine. Optimizes entity collisions using Voxel Bitmasking and GC-free calculations.",
   "authors": [
     "denischifer"
   ],
   "contact": {},
   "license": "All-Rights-Reserved",
+  "icon": "assets/axon/icon.png",
   "environment": "*",
     "entrypoints": {
       "client": [
