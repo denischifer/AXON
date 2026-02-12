@@ -4,19 +4,23 @@ import dev.denischifer.axon.data.SpatialGrid;
 import net.minecraft.block.BlockState;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.packet.s2c.play.ChunkData;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Heightmap;
 import net.minecraft.world.chunk.WorldChunk;
 import net.minecraft.world.chunk.ChunkSection;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.Map;
 import java.util.function.Consumer;
 
 @Mixin(WorldChunk.class)
 public abstract class ChunkLoadMixin {
     @Inject(method = "loadFromPacket", at = @At("RETURN"))
-    private void axon$onChunkPacketLoad(PacketByteBuf buf, NbtCompound nbt, Consumer<net.minecraft.network.packet.s2c.play.ChunkData.BlockEntityVisitor> visitor, CallbackInfo ci) {
+    private void axon$onChunkPacketLoad(PacketByteBuf buf, Map<Heightmap.Type, long[]> heightmaps, Consumer<ChunkData.BlockEntityVisitor> blockEntityVisitorConsumer, CallbackInfo ci) {
         WorldChunk chunk = (WorldChunk) (Object) this;
         var world = chunk.getWorld();
         if (world == null) return;
